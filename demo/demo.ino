@@ -12,7 +12,7 @@
 /*Chip select pin can be connected to D10 or D9 which is hareware optional*/
 /*if you the version of NFC Shield from SeeedStudio is v2.0.*/
 
-#define PN532_CS    9 
+#define PN532_CS    9
 #define PINBUZZER   A0
 
 PN532 nfc(PN532_CS);
@@ -22,7 +22,7 @@ unsigned char dta_ir[] = {9, 90, 91, 11, 31, 4, 0, 0, 0, 0};
 
 int numInput = 0;
 
-//#define  NFC_DEMO_DEBUG 0 
+//#define  NFC_DEMO_DEBUG 0
 
 void beep()
 {
@@ -98,7 +98,7 @@ void loop(void)
             //read memory block 0x08
             if(nfc.readMemoryBlock(1,0x08,block))
             {
-                
+
 #ifdef NFC_DEMO_DEBUG
                 Serial.println("Read block 0x08:");
                 //if read operation is successful
@@ -157,76 +157,90 @@ void proc_ir(unsigned char dta)
     {
         case '1':                       // go ahead
 
-            if(numInput>0)
-            {
-                goAhead(numInput);
-                numInput = 0;
-            }
-            
+        if(numInput>0)
+        {
+            goAhead(numInput);
+            numInput = 0;
+        }
+
 
         break;
 
         case '2':                       // turn left
 
-            if(numInput>0)
-            {
-                turnLeft(numInput);
-                numInput = 0;
-            }
+        if(numInput>0)
+        {
+            turnLeft(numInput);
+            numInput = 0;
+        }
 
         break;
 
         case '3':                       // turn right
-            if(numInput > 0)
-            {
-                turnRight(numInput);
-                numInput = 0;
-            }
+        if(numInput > 0)
+        {
+            turnRight(numInput);
+            numInput = 0;
+        }
         break;
+
+        case '4':
+
+        if(numInput > 0)
+        {
+            goBack(numInput);
+            numInput = 0;
+        }
 
         case 'A':
 
-            numInput += 10;
-            cout << "numInput = " << numInput << endl;
+        numInput += 10;
+        cout << "numInput = " << numInput << endl;
         break;
 
         case 'B':
-            numInput +=20;
-            cout << "numInput = " << numInput << endl;
+        numInput +=20;
+        cout << "numInput = " << numInput << endl;
 
 
         break;
 
         case 'C':
-            numInput += 40;
-            cout << "numInput = " << numInput << endl;
+        numInput += 40;
+        cout << "numInput = " << numInput << endl;
 
         break;
 
         case 'D':
-            numInput += 80;
-            cout << "numInput = " << numInput << endl;
+        numInput += 80;
+        cout << "numInput = " << numInput << endl;
 
         break;
 
         case 'E':
-            numInput += random(0, 10);
-            cout << "numInput = " << numInput << endl;
+        numInput += random(0, 10);
+        cout << "numInput = " << numInput << endl;
 
         break;
 
         case 'F':
-            numInput += random(1,100);
-            cout << "numInput = " << numInput << endl;
+        numInput += random(1,100);
+        cout << "numInput = " << numInput << endl;
 
         break;
 
         case 'G':
-            numInput += random(50, 100);
-            cout << "numInput = " << numInput << endl;
+        numInput += random(50, 100);
+        cout << "numInput = " << numInput << endl;
 
         break;
-            
+        
+        case 'H':
+        numInput += random(100, 200);
+        cout << "numInput = " << numInput << endl;
+
+        break;
+
 
 
         default:
@@ -260,6 +274,16 @@ void goAhead(int dist)
     dist *= 31;
     delay(dist);
     set_speed(-40, -40);
+    delay(5);
+    set_speed(0, 0);
+}
+
+void goBack(int dist)
+{
+    set_speed(-60, -60);
+    dist *= 31;
+    delay(dist);
+    set_speed(40, 40);
     delay(5);
     set_speed(0, 0);
 }
